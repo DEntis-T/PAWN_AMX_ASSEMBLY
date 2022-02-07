@@ -25,6 +25,7 @@ hook main()
     #emit CONST.pri some_global // store the address of 'some_global' in the primary register
     #emit CONST.alt some_global // store the address of 'some_global' in the alternate register
 }
+#include <YSI_Coding\y_hooks>
 hook main()
 {
     static s_local = 20; // static local variables are stored in the data segment
@@ -36,13 +37,14 @@ hook main()
     #emit LOAD.pri s_local // note that static local variables behave like global variables
 }
 new some_global = 10, another_global = 25;
-
+#include <YSI_Coding\y_hooks>
 hook main()
 {
     #emit LOAD.pri some_global // load the value of 'some_global' into the primary register
     #emit LOAD.alt another_global  // load the value of 'another_global' into the alternate register
 }
 new global_arr[10];
+#include <YSI_Coding\y_hooks>
 hook main ()
 {
     #emit CONST.alt global_arr // load the address of 'global_arr' (address of the first element of 'global_arr') into the alternate register
@@ -53,6 +55,7 @@ hook main ()
     #emit CONST.pri 2 // set the index of the elment of 'global_arr' that we are interested in
     #emit IDXADDR // the primary register now has the address of 'global_arr[2]`
 }
+#include <YSI_Coding\y_hooks>
 hook main ()
 {
     #emit CONST.pri 4
@@ -65,7 +68,7 @@ hook main ()
     #emit SUB.alt // subtract 35 from 5; the primary register now has -30
     #emit SMUL.C 2 // multiply -30 by 2; this gives -60
 }
-
+#include <YSI_Coding\y_hooks>
 hook main ()
 {
     #emit CONST.pri 5 // .. 0000 0101
@@ -76,7 +79,7 @@ hook main ()
     #emit INVERT // take one's complement of the value stored in the primary register
     #emit NEG // take two's complement of the value stored in the primary register (essentially negation)
 }
-
+#include <YSI_Coding\y_hooks>
 hook main ()
 {
     #emit CONST.pri 5
@@ -84,8 +87,8 @@ hook main ()
     #emit EQ // set primary register to 1 if 5 == 8, otherwise zero
     #emit LESS // set primary register to 1 if 0 < 8, otherwise zero
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
     new some_local = 25;
     #emit ADDR.alt some_local // computes the address of 'some_local'
@@ -97,8 +100,8 @@ main ()
   
     #emit CONST.pri some_local // mysteriously equivalent to CONST.pri -4 (explained later)
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
     #emit PUSH.C 100 // pushes the value 100 onto the call stack
     #emit POP.pri // pops a value from the stack and stores the result in the primary register
@@ -110,16 +113,16 @@ main ()
   
     #emit XCHG // a better way to swap the contents of the primary register and the alternate register
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
     new local_array[10];
     #emit ADDR.alt local_array // loads the value stored in 'local_array' which is the address of the array
     #emit CONST.pri 5
     #emit LIDX // effectively stores the value of 'local_array[5]' in the primary register
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
      #emit HEAP 16 // make room for four cells (assuming cells are 4 bytes)
      // note that the HEAP instruction had also set the alternate register to the start of our reserved memory
@@ -130,8 +133,8 @@ main ()
     
      #emit HEAP -16 // return the reserved memory back
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
      new cod, dat;
      #emit LCTRL 0 // store the value of the COD segment register in the primary register
@@ -142,13 +145,12 @@ main ()
    
      printf("%d %d", cod, dat);
 }
-
 f()
 {
     print("f() was called.");
 }
-
-main ()
+#include <YSI_Coding\y_hooks>
+hook main ()
 {
    #emit PUSH.C 0 // number of bytes taken up by arguments (explained later)
    #emit LCTRL 6 // get the value of CIP which is the address of the next instruction (ADD.C in our case)
@@ -162,8 +164,8 @@ main ()
    
    #emit NOP // instruction that does nothing 
 }
-
-main()
+#include <YSI_Coding\y_hooks>
+hook main()
 {  
     #emit JUMP check // jump to the check label
 
