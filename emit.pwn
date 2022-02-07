@@ -1,3 +1,16 @@
+/*
+ *
+ * Pawn AMX Assembly
+ * Examples
+ *
+ *
+ * - Use for your 
+ *   kinky purposes.
+ *
+ * Thanks.
+ *
+ */
+
 #include <a_samp>
 #include <YSI_Coding\y_hooks>
 stock retn()
